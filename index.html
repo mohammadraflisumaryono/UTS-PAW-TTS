@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teka-Teki Silang Informatika</title>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .clues {
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .mendatar,
+        .menurun {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .table {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        td {
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #000;
+            position: relative;
+        }
+
+        .white {
+            background-color: #fff;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .blank {
+            background-color: #d3d3d3;
+        }
+
+        .correct {
+            background-color: lightgreen;
+        }
+
+        .incorrect {
+            background-color: lightcoral;
+        }
+
+        .number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #34495e;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .timer {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .clues {
+                flex-direction: column;
+            }
+
+            .mendatar,
+            .menurun {
+                width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Teka-Teki Silang Informatika</h1>
+
+        <div class="timer">
+            Waktu: <span id="minutes">00</span>:<span id="seconds">00</span>
+        </div>
+
+        <div class="controls">
+            <button onclick="checkAll()">Periksa Semua</button>
+            <button onclick="resetGrid()">Reset</button>
+        </div>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="F"><span class="number">1</span></td>
+                    <td class="white" data-answer="L"></td>
+                    <td class="white" data-answer="A"></td>
+                    <td class="white" data-answer="S"></td>
+                    <td class="white" data-answer="H"><span class="number">20</span></td>
+                    <td class="white" data-answer="D"></td>
+                    <td class="white" data-answer="R"><span class="number">11</span></td>
+                    <td class="white" data-answer="I"></td>
+                    <td class="white" data-answer="V"></td>
+                    <td class="white" data-answer="E"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="T"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="W"><span class="number">10</span></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="white" data-answer="M"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="M"><span class="number">2</span></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="D"></td>
+                    <td class="white" data-answer="E"><span class="number">16</span></td>
+                    <td class="white" data-answer="M"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="L"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+
+                    <td class="white" data-answer="N"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="P"><span class="number">13</span> </td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="S"><span class="number">6</span></td>
+                    <td class="white" data-answer="W"></td>
+                    <td class="white" data-answer="I"></td>
+                    <td class="white" data-answer="T"></td>
+                    <td class="white" data-answer="C"></td>
+                    <td class="white" data-answer="H"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="I"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="Y"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="N"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="T"><span class="number">9</span></td>
+                    <td class="white" data-answer="C"></td>
+                    <td class="white" data-answer="P"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="7"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="T"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="E"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="I"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="P"><span class="number">4</span></td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="C"><span class="number">18</span></td>
+                    <td class="white" data-answer="E"></td>
+                    <td class="white" data-answer="S"></td>
+                    <td class="white" data-answer="S"></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="Y"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="L"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="N"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="U"> <span class="number">19</span>
+                    </td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="T"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="A"><span class="number">8</span></td>
+                    <td class="white" data-answer="P"></td>
+                    <td class="white" data-answer="K"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="H"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="U"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="D"></td>
+                    <td class="blank"></td>
+                </tr>
+                <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white " data-answer="O"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="white" data-answer="D"><span class="number">7</span></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="W"></td>
+                    <td class="white" data-answer="N"></td>
+                    <td class="white" data-answer="L"></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="A"></td>
+                    <td class="white" data-answer="D"></td>
+                </tr>
+                <tr>
+                    <td class="white" data-answer="U"><span class="number">5</span> </td>
+                    <td class="white" data-answer="B"><span class="number">17</span> </td>
+                    <td class="white" data-answer="U"> </td>
+                    <td class="white" data-answer="N"></td>
+                    <td class="white" data-answer="T"> </td>
+                    <td class="white" data-answer="U"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="T"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="E"></td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="W"><span class="number">12</span></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="W"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="I"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="J"><span class="number">15</span></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="S"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="P"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="white" data-answer="D"><span class="number">3</span> </td>
+                    <td class="white" data-answer="E"></td>
+                    <td class="white" data-answer="C"></td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="white" data-answer="D"></td>
+                    <td class="white" data-answer="I"></td>
+                    <td class="white" data-answer="N"></td>
+                    <td class="white" data-answer="G"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="R"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="O"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="W"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+                <tr>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="white" data-answer="S"></td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                    <td class="blank"> </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="clues">
+            <div class="mendatar">
+                <h2>Petunjuk Mendatar</h2>
+                <ul>
+                    <li>1. Media penyimpanan eksternal yang sering digunakan pada komputer atau laptop (10 huruf)</li>
+                    <li>2. Perangkat yang memungkinkan komputer untuk mengakses internet (5 huruf)</li>
+                    <li>3. Proses mengubah informasi digital menjadi suara atau gambar. (8 huruf)</li>
+                    <li>4. Perangkat keras yang berfungsi untuk memproses data pada komputer (8 huruf)</li>
+                    <li>5. Sistem operasi berbasis Linux, sering digunakan untuk server (5 huruf)</li>
+                    <li>6. Sebuah perangkat jaringan yang menghubungkan beberapa komputer dalam satu area (6 huruf)</li>
+                    <li>7. Proses pemindahan data dari satu tempat ke tempat lain di internet (10 huruf)</li>
+                    <li>8. Perangkat lunak yang digunakan untuk menjalankan aplikasi di Android (3 huruf)</li>
+                    <li>9. Protokol standar untuk komunikasi jaringan di internet (3 huruf)</li>
+                    <li>10. Salah satu jenis virus komputer yang menggandakan diri tanpa persetujuan pengguna (4 huruf)
+                    </li>
+                </ul>
+            </div>
+            <div class="menurun">
+                <h2>Petunjuk Menurun</h2>
+                <ul>
+                    <li>11. Memori yang hanya dapat dibaca dan tidak dapat ditulis ulang (3 huruf)</li>
+                    <li>12. Sistem operasi buatan Microsoft yang paling populer. (7 huruf)</li>
+                    <li>13. Alat untuk mencetak dokumen dari komputer ke kertas (7 huruf)</li>
+                    <li>14. Bahasa pemrograman yang populer untuk data science dan AI (6 huruf)</li>
+                    <li>15. Format gambar terkompresi yang sering digunakan di web (3 huruf)</li>
+                    <li>16. Teknik untuk menyembunyikan data agar tidak terbaca oleh pihak yang tidak berwenang (10
+                        huruf)</li>
+                    <li>17. Perangkat lunak yang digunakan untuk browsing internet (8 huruf)</li>
+                    <li>18. Model penyimpanan data yang dilakukan secara daring (5 huruf)</li>
+                    <li>19. Proses penambahan fitur baru atau perbaikan bug dalam perangkat lunak (7 huruf)</li>
+                    <li>20. Bahasa untuk membuat struktur halaman web (4 huruf)</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const answers = {
+            mendatar: {
+                1: "FLASHDRIVE",
+                2: "MODEM",
+                3: "Decoding",
+                4: "PROCESSOR",
+                5: "UBUNTU",
+                6: "SWITCH",
+                7: "DOWNLOAD",
+                8: "APK",
+                9: "TCP",
+                10: "WORM"
+            },
+            menurun: {
+                1: "ROM",
+                2: "WINDOWS",
+                3: "PRINTER",
+                4: "PYTHON",
+                5: "JPG",
+                6: "ENCRYPTION",
+                7: "BROWSER",
+                8: "CLOUD",
+                9: "UPDATE",
+                10: "HTML"
+            }
+        };
+
+        // Timer functionality
+        let seconds = 0;
+        let minutes = 0;
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        function updateTimer() {
+            seconds++;
+            if (seconds === 60) {
+                seconds = 0;
+                minutes++;
+            }
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        }
+
+        // Grid functionality
+        document.querySelectorAll(".white").forEach(cell => {
+            cell.setAttribute("contenteditable", "true");
+            cell.addEventListener("input", () => {
+                if (cell.innerText.length > 1) {
+                    cell.innerText = cell.innerText.slice(-1);
+                }
+                cell.innerText = cell.innerText.toUpperCase();
+            });
+        });
+
+        function checkAll() {
+            document.querySelectorAll(".white").forEach(cell => {
+                const answer = cell.getAttribute("data-answer");
+                if (cell.innerText.toUpperCase() === answer) {
+                    cell.classList.add("correct");
+                    cell.classList.remove("incorrect");
+                } else {
+                    cell.classList.add("incorrect");
+                    cell.classList.remove("correct");
+                }
+            });
+        }
+
+        function resetGrid() {
+            document.querySelectorAll(".white").forEach(cell => {
+                cell.innerText = "";
+                cell.classList.remove("correct", "incorrect");
+            });
+            seconds = 0;
+            minutes = 0;
+        }
+    </script>
+</body>
+
+</html>
